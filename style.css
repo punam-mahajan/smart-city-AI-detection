@@ -1,0 +1,45 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #eef2f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 400px;
+}
+
+h2 { color: #2c3e50; margin-bottom: 20px; }
+
+input[type="file"] { margin: 20px 0; padding: 10px; border: 1px dashed #d3d8dc; width: 80%; }
+
+button {
+    background-color: #c9cfcc;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover { background-color: #0e0f0f; }
+
+#result {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.detected-status { color: hsl(10, 44%, 41%); background: #bc6b6b; } /* Red for Pothole/Garbage */
+.not-detected-status { color: #01192f; background: #6bb6e9; } /* Green for Clean */

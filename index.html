@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart City AI - Detection</title>
+    <link rel="stylesheet"href='style.css'>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f4; }
+        .container { background: rgb(168, 11, 134); padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
+        h2 { color: #d1d5dc; }
+        #result { margin-top: 20px; font-weight: bold; font-size: 1.2em; color: #dfe6e0; }
+        .confidence { font-size: 0.9em; color: #666; }
+        button { padding: 10px 20px; cursor: pointer; background-color: #f4f8f5; color: white; border: none; border-radius: 5px; }
+        button:hover { background-color: #7ba43e; }
+        input { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Smart City AI: Object Detection</h2>
+        <p>Select an image to detect (Pothole/Garbage/etc.)</p>
+        
+        <input type="file" id="imageInput" accept="image/*">
+        <br>
+        <button onclick="detect()">Detect Now</button>
+
+        <div id="result">
+            </div>
+    </div>
+
+    <script>
+        async function detect() {
+            const fileInput = document.getElementById("imageInput");
+            const resultDisplay = document.getElementById("result");
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert("Please select an image first!");
+                return;
+            }
+
+            // Loading state
+            resultDisplay.innerHTML = "Processing... Please wait.";
+
+            const formData = new FormData();
+            formData.append("image", file);
+
+            try {
+                // Backend URL (Flask port 5000)
+                const response = await fetch("http://127.0.0.1:5000/predict", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.status === "success") {
+                    // Prediction aur Confidence dono dikhana
+                    resultDisplay.innerHTML = `
+                        <div>Status: <span style="color:green;">${data.prediction}</span></div>
+                        <div class="confidence">Confidence: ${data.confidence}</div>
+                    `;
+                } else {
+                    resultDisplay.innerHTML = `<span style="color:red;">Error: ${data.error}</span>`;
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+                resultDisplay.innerHTML = `<span style="color:red;">Server connection failed! Make sure Flask is running.</span>`;
+            }
+        }
+    </script>
+
+</body>
+</html>
